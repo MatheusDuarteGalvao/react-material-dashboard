@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import { TarefasToolbar, TarefasTable } from './components';
@@ -36,11 +36,16 @@ const TarefaList = () => {
       headers: headers
     }).then(response => {
       const listarTarefas = response.data
+      console.log(listarTarefas)
       setTarefas(listarTarefas)
     }).catch( erro => {
       console.log(erro)
     })
   }
+
+  useEffect(() => {
+    listarTarefas();
+  }, [] )
  
   return (
     <div className={classes.root}>
