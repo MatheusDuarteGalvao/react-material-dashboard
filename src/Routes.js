@@ -7,7 +7,6 @@ import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 import {
   Dashboard as DashboardView,
   TarefaList as TarefaListView,
-  Account as AccountView,
   SignIn as SignView,
 } from './views';
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import { TarefasToolbar, TarefasTable } from './components';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,13 +16,23 @@ const useStyles = makeStyles(theme => ({
 const TarefaList = () => {
   const classes = useStyles();
 
-  const [users] = useState([]);
+  const [tarefas] = useState([]);
+
+  const salvar = (tarefa) => {
+    axios.post('https://minhastarefas-api.herokuapp.com/tarefas', tarefa, {
+      headers: { 'x-tenant-id' : 'matheusg223@hotmail.com' }
+    }).then( response => {
+      console.log(response.data)
+    }).catch( erro => {
+      console.log(erro)
+    })
+  }
 
   return (
     <div className={classes.root}>
-      <TarefasToolbar />
+      <TarefasToolbar salvar={salvar} />
       <div className={classes.content}>
-        <TarefasTable users={users} />
+        <TarefasTable tarefas={tarefas} />
       </div>
     </div>
   );
