@@ -48,6 +48,8 @@ const TarefasToolbar = props => {
       categoria: categoria
     }
     props.salvar(tarefa)
+    setDescricao('')
+    setCategoria('')
   }
 
   const classes = useStyles();
