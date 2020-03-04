@@ -64,6 +64,8 @@ const TarefaList = () => {
     axios.delete(`${API_URL}/${id}`, { 
       headers: headers 
     }).then(response => {
+      const lista = tarefas.filter( tarefa => tarefa.id !== id)
+      setTarefas(lista)
       console.log(response)
     }).catch( erro => {
       console.log(erro)

@@ -64,7 +64,7 @@ const TarefasToolbar = props => {
       </div>
       <div className={classes.row}>
         <Grid container>
-          <Grid item md={4}>
+          <Grid item md={5}>
             <TextField
               className={classes.searchInput}
               placeholder="Descrição da tarefa"
@@ -74,7 +74,7 @@ const TarefasToolbar = props => {
               onChange={e => setDescricao(e.target.value)}
             />
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={5}>
             <FormControl fullWidth>
               <InputLabel>Categoria: </InputLabel>
               <Select value={categoria} onChange={e => setCategoria(e.target.value)}>
