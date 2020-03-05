@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { listar } from '../../store/tarefasReducer';
+
 import { TarefasToolbar, TarefasTable } from './components';
 import {
   Dialog,
@@ -20,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TarefaList = () => {
+const TarefaList = (props) => {
   const classes = useStyles();
 
   const [tarefas, setTarefas] = useState([]);
@@ -90,7 +94,7 @@ const TarefaList = () => {
   }
 
   useEffect(() => {
-    listarTarefas();
+    props.listar();
   }, [] )
  
   return (
@@ -99,7 +103,7 @@ const TarefaList = () => {
       <div className={classes.content}>
         <TarefasTable alterarStatus={alterarStatus}
                       deleteAction={deletar}
-                      tarefas={tarefas} />
+                      tarefas={props.tarefas} />
       </div>
       <Dialog open={openDialog} onClose={e => setOpenDialog(false)}>
         <DialogTitle>Atenção</DialogTitle>
@@ -114,4 +118,11 @@ const TarefaList = () => {
   );
 };
 
-export default TarefaList;
+const mapStateToProps = state => ({
+  tarefas: state.tarefas.tarefas
+})
+
+const mapDispatchToProps = dispatch => 
+  bindActionCreators({listar}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps) (TarefaList);
