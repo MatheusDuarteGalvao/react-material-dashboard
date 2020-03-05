@@ -3,7 +3,10 @@ import { makeStyles } from '@material-ui/styles';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { listar } from '../../store/tarefasReducer';
+import { 
+  listar,
+  salvar
+} from '../../store/tarefasReducer';
 
 import { TarefasToolbar, TarefasTable } from './components';
 import {
@@ -32,33 +35,6 @@ const TarefaList = (props) => {
   const [mensagem, setMensagem] = useState('');
 
   const API_URL = 'https://minhastarefas-api.herokuapp.com/tarefas';
-
-  const salvar = (tarefa) => {
-    axios.post(API_URL, tarefa, {
-      headers: { 'x-tenant-id' : localStorage.getItem('email_usuario_logado') }
-    }).then( response => {
-      const novaTarefa = response.data
-      setTarefas( [...tarefas, novaTarefa] )
-      setMensagem('Item adicionado com sucesso')
-      setOpenDialog(true)
-    }).catch( erro => {
-      setMensagem('Ocorreu um erro')
-      setOpenDialog(true)
-    })
-  }
-
-  const listarTarefas = () => {
-    axios.get(API_URL, {
-      headers: { 'x-tenant-id' : localStorage.getItem('email_usuario_logado') }
-    }).then(response => {
-      const listarTarefas = response.data
-      console.log(listarTarefas)
-      setTarefas(listarTarefas)
-    }).catch( erro => {
-      setMensagem('Ocorreu um erro')
-      setOpenDialog(true)
-    })
-  }
 
   const alterarStatus = (id) => {
     axios.patch(`${API_URL}/${id}`, null, {
@@ -99,7 +75,7 @@ const TarefaList = (props) => {
  
   return (
     <div className={classes.root}>
-      <TarefasToolbar salvar={salvar} />
+      <TarefasToolbar salvar={props.salvar} />
       <div className={classes.content}>
         <TarefasTable alterarStatus={alterarStatus}
                       deleteAction={deletar}
@@ -123,6 +99,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => 
-  bindActionCreators({listar}, dispatch)
+  bindActionCreators({listar, salvar}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps) (TarefaList);
