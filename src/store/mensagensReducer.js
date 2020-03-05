@@ -1,6 +1,6 @@
 const ESTADO_INICIAL = {
     mensagem: '',
-    mostrarMensagem: true
+    mostrarMensagem: false
 }
 
 export const ACTIONS = {
