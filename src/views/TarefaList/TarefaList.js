@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { 
   listar,
   salvar,
-  deletar
+  deletar,
+  alterarStatus
 } from '../../store/tarefasReducer';
 
 import { TarefasToolbar, TarefasTable } from './components';
@@ -37,25 +38,6 @@ const TarefaList = (props) => {
 
   const API_URL = 'https://minhastarefas-api.herokuapp.com/tarefas';
 
-  const alterarStatus = (id) => {
-    axios.patch(`${API_URL}/${id}`, null, {
-      headers: { 'x-tenant-id' : localStorage.getItem('email_usuario_logado') }
-    }).then( response => {
-      const lista = [...tarefas]
-      lista.forEach(tarefa => {
-        if(tarefa.id === id){
-          tarefa.done = true;
-        }
-      })
-      setTarefas(lista)
-      setOpenDialog(true)
-      setMensagem('Iem atualizado com sucesso')
-    }).catch( erro => {
-      setMensagem('Ocorreu um erro')
-      setOpenDialog(true)
-    })
-  }
-
   useEffect(() => {
     props.listar();
   }, [] )
@@ -64,7 +46,7 @@ const TarefaList = (props) => {
     <div className={classes.root}>
       <TarefasToolbar salvar={props.salvar} />
       <div className={classes.content}>
-        <TarefasTable alterarStatus={alterarStatus}
+        <TarefasTable alterarStatus={props.alterarStatus}
                       deleteAction={props.deletar}
                       tarefas={props.tarefas} />
       </div>
@@ -86,6 +68,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => 
-  bindActionCreators({listar, salvar, deletar}, dispatch)
+  bindActionCreators({
+    listar,
+    salvar, 
+    deletar, 
+    alterarStatus
+  }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps) (TarefaList);
