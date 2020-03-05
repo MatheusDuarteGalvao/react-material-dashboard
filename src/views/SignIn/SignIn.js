@@ -134,7 +134,7 @@ const SignIn = props => {
   const handleSignIn = event => {
     event.preventDefault();
     localStorage.setItem('email_usuario_logado', email)
-    history.push('/');
+    history.push('/tarefas');
   };
 
   return (
