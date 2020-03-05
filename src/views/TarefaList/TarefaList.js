@@ -10,6 +10,10 @@ import {
   alterarStatus
 } from '../../store/tarefasReducer';
 
+import {
+  esconderMensagem
+} from '../../store/mensagensReducer';
+
 import { TarefasToolbar, TarefasTable } from './components';
 import {
   Dialog,
@@ -18,7 +22,6 @@ import {
   DialogTitle,
   Button
 } from '@material-ui/core';
-import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,12 +35,6 @@ const useStyles = makeStyles(theme => ({
 const TarefaList = (props) => {
   const classes = useStyles();
 
-  const [tarefas, setTarefas] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false); 
-  const [mensagem, setMensagem] = useState('');
-
-  const API_URL = 'https://minhastarefas-api.herokuapp.com/tarefas';
-
   useEffect(() => {
     props.listar();
   }, [] )
@@ -50,13 +47,13 @@ const TarefaList = (props) => {
                       deleteAction={props.deletar}
                       tarefas={props.tarefas} />
       </div>
-      <Dialog open={openDialog} onClose={e => setOpenDialog(false)}>
+      <Dialog open={props.openDialog} onClose={props.esconderMensagem}>
         <DialogTitle>Atenção</DialogTitle>
         <DialogContent>
-          {mensagem}
+          {props.mensagem}
         </DialogContent>
         <DialogActions>
-          <Button onClick={e => setOpenDialog(false)}>Fechar</Button>
+          <Button onClick={props.esconderMensagem}>Fechar</Button>
         </DialogActions>
       </Dialog>
     </div>
@@ -64,7 +61,9 @@ const TarefaList = (props) => {
 };
 
 const mapStateToProps = state => ({
-  tarefas: state.tarefas.tarefas
+  tarefas: state.tarefas.tarefas,
+  mensagem: state.mensagens.mensagem,
+  openDialog: state.mensagens.mostrarMensagem
 })
 
 const mapDispatchToProps = dispatch => 
@@ -72,7 +71,8 @@ const mapDispatchToProps = dispatch =>
     listar,
     salvar, 
     deletar, 
-    alterarStatus
+    alterarStatus,
+    esconderMensagem
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps) (TarefaList);
